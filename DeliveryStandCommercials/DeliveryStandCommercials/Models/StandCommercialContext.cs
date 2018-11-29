@@ -15,6 +15,8 @@ namespace DeliveryStandCommercials.Models
             Database.EnsureCreated();
         }
 
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StandCommercial>()
@@ -30,6 +32,9 @@ namespace DeliveryStandCommercials.Models
                 .WithMany(c => c.StandCommercials)
                 .HasForeignKey(sc => sc.StandId);
         }
+
+        
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

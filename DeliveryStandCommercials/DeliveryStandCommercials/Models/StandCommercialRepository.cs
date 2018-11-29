@@ -38,6 +38,28 @@ namespace DeliveryStandCommercials.Models
                 return db.Commercials.Find(commercialId);
             }
         }
+
+
+
+
+        /// <summary>
+        /// To get list commercials of particular stand
+        /// </summary>
+        /// <param name="standId"></param>
+        /// <returns></returns>
+        public IEnumerable<Commercial> GetCommercialCurrentStand(int standId)
+        {
+            using (var db = new StandCommercialContext())
+            {
+                return db.Stands
+                .Where(c => c.Id == standId)
+                .SelectMany(c => c.StandCommercials)
+                .Select(sc => sc.Commercial).ToList();
+
+            }
+        }
+
+
         /// <summary>
         /// Add commercial in database
         /// </summary>
@@ -63,7 +85,7 @@ namespace DeliveryStandCommercials.Models
         /// <param name="standId"></param>
         /// <returns></returns>
 
-        public int AddCommercial(Commercial commercial, List<int> standId)
+        public int AddCommercialCurrentStand(Commercial commercial, List<int> standId)
         {
             using (var db = new StandCommercialContext())
             {
@@ -97,6 +119,7 @@ namespace DeliveryStandCommercials.Models
         {
             using (var db = new StandCommercialContext())
             {
+
                 db.Entry(commercial).State = EntityState.Modified;
                 db.SaveChanges();
                 return commercial.Id;
@@ -111,13 +134,14 @@ namespace DeliveryStandCommercials.Models
 
 
 
-        public void DeleteCommercial(int commercialId)
+        public int DeleteCommercial(int commercialId)
         {
             using (var db = new StandCommercialContext())
             {
                 var commercial = db.Commercials.Find(commercialId);
                 db.Commercials.Remove(commercial);
                 db.SaveChanges();
+                return commercialId;
             }
         }
 
@@ -223,14 +247,14 @@ namespace DeliveryStandCommercials.Models
         /// <summary>
         /// To add record about mapping commercial and stand in database
         /// </summary>
-        /// <param name="idCommercial"></param>
+        /// <param name="commercialId"></param>
         /// <param name="standId"></param>
-        public void AddStandCommercial(int idCommercial, int standId)
+        public void AddStandCommercial(int commercialId, int standId)
         {
             using (var db = new StandCommercialContext())
             {
                 //  var stand = db.Stands.Find(standId);
-                var commercial = db.Commercials.Find(idCommercial);
+                var commercial = db.Commercials.Find(commercialId);
 
                 commercial.StandCommercials.Add(new StandCommercial { CommercialId = commercial.Id, StandId = standId });
                 db.SaveChanges();

@@ -14,116 +14,186 @@ namespace DeliveryStandCommercials.Controllers
     {
 
 
-        /*
-                // GET: api/<controller>
-                [HttpGet]
-                public IEnumerable<Commercial> Get()
-                {
-                    return new string[] { "value1", "value2" };
-                }
-
-                // GET api/<controller>/5
-                [HttpGet("{id}")]
-                public string Get(int id)
-                {
-                    return "value";
-                }
-
-                */
-
-        /*
-                // GET: api/<controller>
-                [HttpGet]
-                public IEnumerable<Commercial> Get()
-                {
-                    return new Commercial { CommercialName = "dddaaaa"};
-                }
-
-                // GET api/<controller>/5
-                [HttpGet("{id}")]
-                public Commercial Get(int idCommercial)
-                {
-                    using (var db = new StandCommercialContext())
-                    {
-                        var commercial = db.Commercials.FirstOrDefault(c => c.Id == idCommercial);
-
-                        return commercial;
-                    }
-                }
-                */
 
 
+        //  Commercial controller
 
-        // GET: api/<controller>
+     
+        /// <summary>
+        /// Get list of commercial
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Route("Commercial")]
+        public IEnumerable<Commercial> GetListAllCommercials()
         {
-            return new string[] { "value1", "value2" };
-        }
-        /*
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
+            var repository = new StandCommercialRepository();
+            return repository.GetAllCommercials();
         }
 
-        */
-        /*
-        // GET api/<controller>/5
-        [HttpGet("{idStand}")]
-        public Commercial Get(int idStand)
+        /// <summary>
+        /// Get the commercial
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Commercial/{id}")]
+        public Commercial GetCommercial(int id)
         {
-
-
-            return "value";
+            var repository = new StandCommercialRepository();
+            return repository.GetCommercial(id);
         }
 
-        */
 
 
+        /// <summary>
+        /// To get list commercials of particular stand
+        /// </summary>
+        /// <param name="standId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("CurrentStand/{standId}")]
+        public IEnumerable<Commercial> GetListCommercialCurrentStand(int standId)
+        {
+            var repository = new StandCommercialRepository();
+            return repository.GetCommercialCurrentStand(standId);
+        }
 
+
+/*        
         [HttpPost]
-
-        public void AddStandCommercialMapping([FromBody]StandCommercial standCommercial)
+        [Route("Commercial/{standId}")]
+        public int AddCommercialCurrentStand([FromBody]StandCommercial standCommercial)
         {
             var temp = new StandCommercialRepository();
-            temp.AddStandCommercial(standCommercial.CommercialId, standCommercial.StandId);
+            return temp.AddCommercialCurrentStand(standCommercial.CommercialId, standCommercial.StandId);
 
         }
-        // POST api/<controller>
+        */
+        
 
+        /// <summary>
+        /// To add the commercial
+        /// </summary>
+        /// <param name="commercial"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Commercial")]
-        public void AddCommercial([FromBody]Commercial commercial)
+        public int AddCommercial([FromBody]Commercial commercial)
         {
-            var temp = new StandCommercialRepository();
-            temp.AddCommercial(commercial);
+            var repository = new StandCommercialRepository();
+            return repository.AddCommercial(commercial);
+        }
+
+        /// <summary>
+        /// To update the commercial
+        /// </summary>
+        /// <param name="commercial"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("Commercial")]
+        public int UpdateCommercial([FromBody]Commercial commercial)
+        {
+            var repository = new StandCommercialRepository();
+            return repository.UpdateCommercial(commercial);
+        }
+
+        /// <summary>
+        /// To delete the commercial
+        /// </summary>
+        /// <param name="idCommercial"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("Commercial/{idCommercial}")]
+        public int DeleteCommercial(int idCommercial)
+        {
+            var repository = new StandCommercialRepository();
+            return repository.DeleteCommercial(idCommercial);
         }
 
 
+
+
+        // Stands controller
+
+        /// <summary>
+        /// Get list of stands
+        /// </summary>
+        /// <param name="stand"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Stand")]
+        public IEnumerable<Stand> GetListAllStands()
+        {
+            var repository = new StandCommercialRepository();
+            return repository.GetAllStands();
+        }
+
+        /// <summary>
+        /// Get the stand
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Stand/{id}")]
+        public Stand GetStand(int id)
+        {
+            var repository = new StandCommercialRepository();
+            return repository.GetStand(id);
+        }
+
+        /// <summary>
+        /// To add the stand
+        /// </summary>
+        /// <param name="stand"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Stand")]
-        public void AddStand([FromBody]Stand stand)
+        public int AddStand([FromBody]Stand stand)
         {
-            var temp = new StandCommercialRepository();
-            temp.AddStand(stand);
+            var repository = new StandCommercialRepository();
+            return repository.AddStand(stand);
         }
 
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        /// <summary>
+        /// To update the stand
+        /// </summary>
+        /// <param name="stand"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("Stand")]
+        public int UpdateStand([FromBody]Stand stand)
         {
+            var repository = new StandCommercialRepository();
+            return repository.UpdateStand(stand);
         }
 
-        // DELETE api/<controller>/5
-        [HttpDelete("{idCommercial}")]
-        [Route("Commercial")]
-        public void DeleteCommercial(int idCommercial)
+        /// <summary>
+        /// To delete the stand
+        /// </summary>
+        /// <param name="idStand"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("Stand/{idStand}")]
+        public int DeleteStand(int idStand)
         {
-            var temp = new StandCommercialRepository();
-            temp.DeleteCommercial(idCommercial);
+            var repository = new StandCommercialRepository();
+            return repository.DeleteStand(idStand);
         }
+
+
+
+
+        //Controller for mapping commercial and stand
+
+
+        [HttpPost]
+        public void AddStandCommercial([FromBody] int[] commercialIdAndStandId)
+        {
+            var repository = new StandCommercialRepository();
+            //  repository.AddStandCommercial(commercialId,standId);
+            repository.AddStandCommercial(commercialIdAndStandId[0], commercialIdAndStandId[1]);
+        }
+
+               
 
         [HttpDelete("{idCommercial}/{idStand}")]
         public void DeleteStandCommercial(int idCommercial, int idStand)
